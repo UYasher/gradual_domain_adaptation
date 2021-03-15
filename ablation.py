@@ -1,6 +1,6 @@
 import models
 import datasets
-from regularization_helps import finite_data_experiment, regularization_results
+from regularization_helps import finite_data_experiment, regularization_results, rotated_mnist_regularization_experiment
 
 
 def rotated_mnist_60_conv_experiment_ablation():
@@ -49,6 +49,27 @@ def soft_portraits_conv_experiment_ablation():
 
 
 if __name__ == "__main__":
+    rotated_mnist_regularization_experiment(
+        models.simple_softmax_conv_model_bn, models.simple_softmax_conv_model_dropout, 'ce',
+        save_name_base='saved_files/inf_reg_mnist_ablation', N=2000, delta_angle=3, num_angles=20,
+        retrain=False, num_runs=5)
+    print("Rot MNIST experiment 2000 points rotated")
+    regularization_results('saved_files/inf_reg_mnist_ablation_2000_3_20.dat')
+
+    rotated_mnist_regularization_experiment(
+        models.simple_softmax_conv_model_bn, models.simple_softmax_conv_model_dropout, 'ce',
+        save_name_base='saved_files/inf_reg_mnist', N=5000, delta_angle=3, num_angles=20,
+        retrain=False, num_runs=5)
+    print("Rot MNIST experiment 5000 points rotated")
+    regularization_results('saved_files/inf_reg_mnist_ablation_5000_3_20.dat')
+
+    rotated_mnist_regularization_experiment(
+        models.simple_softmax_conv_model_bn, models.simple_softmax_conv_model_dropout, 'ce',
+        save_name_base='saved_files/inf_reg_mnist', N=20000, delta_angle=3, num_angles=20,
+        retrain=False, num_runs=5)
+    print("Rot MNIST experiment 20k points rotated")
+    regularization_results('saved_files/inf_reg_mnist_ablation_20000_3_20.dat')
+
     # Run all experiments comparing regularization vs no regularization.
     portraits_conv_experiment_ablation()
     print("Portraits conv experiment reg vs no reg")
