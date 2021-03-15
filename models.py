@@ -131,6 +131,40 @@ def papernot_softmax_model(num_labels, input_shape=(28,28,1), l2_reg=0.0):
     return papernot_conv_model
 
 
+# Ablation Models
+
+
+def simple_softmax_conv_model_bn(num_labels, hidden_nodes=32, input_shape=(28,28,1), l2_reg=0.0):
+    return keras.models.Sequential([
+    keras.layers.Conv2D(hidden_nodes, (5,5), (2, 2), activation=tf.nn.relu,
+                           padding='same', input_shape=input_shape),
+    keras.layers.Conv2D(hidden_nodes, (5,5), (2, 2), activation=tf.nn.relu,
+                           padding='same'),
+    keras.layers.Conv2D(hidden_nodes, (5,5), (2, 2), activation=tf.nn.relu,
+                           padding='same'),
+    keras.layers.BatchNormalization(),
+    keras.layers.Flatten(name='after_flatten'),
+    # keras.layers.Dense(64, activation=tf.nn.relu),
+    keras.layers.Dense(num_labels, activation=tf.nn.softmax, name='out')
+    ])
+
+
+def simple_softmax_conv_model_dropout(num_labels, hidden_nodes=32, input_shape=(28,28,1), l2_reg=0.0):
+    return keras.models.Sequential([
+    keras.layers.Conv2D(hidden_nodes, (5,5), (2, 2), activation=tf.nn.relu,
+                           padding='same', input_shape=input_shape),
+    keras.layers.Conv2D(hidden_nodes, (5,5), (2, 2), activation=tf.nn.relu,
+                           padding='same'),
+    keras.layers.Conv2D(hidden_nodes, (5,5), (2, 2), activation=tf.nn.relu,
+                           padding='same'),
+    keras.layers.Dropout(0.5),
+    keras.layers.Flatten(name='after_flatten'),
+    # keras.layers.Dense(64, activation=tf.nn.relu),
+    keras.layers.Dense(num_labels, activation=tf.nn.softmax, name='out')
+    ])
+
+
+
 # Losses.
 
 def sparse_categorical_hinge(num_classes):
